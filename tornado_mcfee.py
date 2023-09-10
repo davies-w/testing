@@ -27,6 +27,6 @@ k = params.get("clusters", 3)
 
 _, _, _, _, _, _, _, _, _, times, segs = mcfee.mcfee(y, sr, beats, dims, k)
 
-sections = [{"start": t, "label": l }  for t, l in zip(times, segs)]
+sections = [{"start": round(t, 3), "label": l }  for t, l in zip(times, segs)]
 
 np_json.to_stdout(sections)
