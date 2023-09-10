@@ -13,7 +13,7 @@ for file in params["harmony_stem_files"]:
   y += y1
 
 #
-# Use a provide beat array of dicts, else use Librosa
+# Use a provided beatnet derived array of dicts, else use Librosa
 #
 if "beats" in params:
   beats = params["beats"]
