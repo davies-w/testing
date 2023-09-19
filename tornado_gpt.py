@@ -17,10 +17,11 @@ import np_json
 
 params = np_json.from_stdin()
 
-SPOTIFY_CLIENT_ID = "841bb956c9984faa9b64705535a26429"
-SPOTIFY_CLIENT_SECRET = "5eee3dc60d5a416887a4c5e4f0e2ff43"
+SPOTIFY_CLIENT_ID = os.environ["SPOTIFY_CLIENT_ID"]
+SPOTIFY_CLIENT_SECRET = os.environ["SPOTIFY_CLIENT_SECRET"]
 OPENAPI_API_KEY = os.environ["OPENAI_API_KEY"]
-MODEL = "gpt-3.5-turbo"
+OPENAI_MODEL = os.environ["OPENAI_MODEL"]
+
 spotify_client = chatspot.login(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, OPENAPI_API_KEY)
 
 
@@ -29,7 +30,7 @@ spotify_client = chatspot.login(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, OPENAP
 #
 import re
 import json
-songs = chatspot.songs_by_vibe(params["vibe"], model=MODEL)
+songs = chatspot.songs_by_vibe(params["vibe"], model=OPENAI_MODEL)
 validated_songs = chatspot.lookup_songs(spotify_client, songs)
 
 validated_songs = [s  for s in validated_songs if s['uri'] != 'NOTFOUND']
