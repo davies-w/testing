@@ -31,25 +31,21 @@ import json
 songs = chatspot.songs_by_vibe(params["vibe"], model=MODEL)
 validated_songs = chatspot.lookup_songs(spotify_client, songs)
 
+validated_songs = [s  for s in validated_songs if s['uri'] != 'NOTFOUND']
+
+genre = None
 genres = Counter()
-validated_tracks = []
 for s in validated_songs:
-  if s_uri == 'NOTFOUND':
-    continue
   if 'artist_genres' in s:
     for g in s['artist_genres']:
       genres[g] += 1
 
+if len(genres) > 0:
+  genre = genres.most_common()[0][0]
 
-try:
-  genre = genres.most_common(1)[0][0]
-except:
-  genre = None
 
+validated_tracks = []
 for s in validated_songs:
-  if s['uri'] == 'NOTFOUND':
-    continue
-  
   validated_tracks += [ {"title": s['title'], 
                         "artist": s['artist'], 
                         "isrc": s['isrc'], 
