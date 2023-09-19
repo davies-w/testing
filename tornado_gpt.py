@@ -10,6 +10,7 @@
 
 import chatspot
 import sys
+import os
 from collections import Counter
 import np_json
 
@@ -18,7 +19,7 @@ params = np_json.from_stdin()
 
 SPOTIFY_CLIENT_ID = "841bb956c9984faa9b64705535a26429"
 SPOTIFY_CLIENT_SECRET = "5eee3dc60d5a416887a4c5e4f0e2ff43"
-OPENAPI_API_KEY = "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"
+OPENAPI_API_KEY = os.environ["OPENAI_API_KEY"]
 MODEL = "gpt-3.5-turbo"
 spotify_client = chatspot.login(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, OPENAPI_API_KEY)
 
