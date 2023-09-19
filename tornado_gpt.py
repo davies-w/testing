@@ -11,50 +11,54 @@
 import chatspot
 import sys
 from collections import Counter
+import np_json
 
-if len(sys.argv) < 2:
-  print(f"Please provide a vibe in the format 'summer bbq party'")
-  sys.exit(1)
+
+params = np_json.from_stdin()
 
 SPOTIFY_CLIENT_ID = "841bb956c9984faa9b64705535a26429"
 SPOTIFY_CLIENT_SECRET = "5eee3dc60d5a416887a4c5e4f0e2ff43"
 OPENAPI_API_KEY = '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'
-
+MODEL = 'gpt-3.5-turbo'
 spotify_client = chatspot.login(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, OPENAPI_API_KEY)
 
-vibe = (' '.join(sys.argv[1:]))
+
 #
 # To Cut and Paste to File 
 #
 import re
 import json
-songs = chatspot.songs_by_vibe(vibe, model="gpt-3.5-turbo-0301")
+songs = chatspot.songs_by_vibe(params["vibe"], model=MODEL)
 validated_songs = chatspot.lookup_songs(spotify_client, songs)
 
-c = Counter()
-validated_tracks_for_tim = []
+genres = Counter()
+validated_tracks = []
 for s in validated_songs:
-  if len(validated_tracks_for_tim) == 5:
-    break
-  s_uri = s['uri']
   if s_uri == 'NOTFOUND':
     continue
-  else:
-    validated_track = {"title": f"{s['title']}", "artist": f"{s['artist']}", "isrc": f"{s['isrc']}", "uri": f"{s_uri}"}
-    validated_tracks_for_tim.append(validated_track)
   if 'artist_genres' in s:
     for g in s['artist_genres']:
-      c[g] += 1
+      genres[g] += 1
+
+
 try:
-  genre = c.most_common(1)[0][0]
+  genre = genres.most_common(1)[0][0]
 except:
   genre = None
 
-#filename = re.sub("[^a-zA-Z0-9]","",vibe)
-data = {"vibe_input": vibe, "valid_track_count": len(validated_tracks_for_tim), "seed_genre": genre, "seed_tracks": validated_tracks_for_tim}
+for s in validated_songs:
+  if s['uri'] == 'NOTFOUND':
+    continue
+  
+  validated_tracks += [ {"title": s['title'], 
+                        "artist": s['artist'], 
+                        "isrc": s['isrc'], 
+                         "uri": s['uri']}]
 
-if not validated_tracks_for_tim:
-  sys.stderr.write("No valid songs found, try another vibe. Alternatively GPT may not be working.\n")
-  sys.exit(1)
-result=json.dumps(data, indent=2)
-print(result)
+validated_tracks = validated_tracks[0:4 if genre else 5]
+seed_genre_and_tracks  = {"valid_track_count": len(validated_tracks),
+                         "seed_genre": genre, 
+                         "seed_tracks": validated_tracks}
+
+np_json.to_stdout(seed_genre_and_tracks)
+
