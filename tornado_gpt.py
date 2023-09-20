@@ -12,7 +12,7 @@ import gpt
 
 params = np_json.from_stdin()
 
-seed_genre_and_tracks = gpt(params)
+seed_genre_and_tracks = gpt.gpt(params)
 
 np_json.to_stdout(seed_genre_and_tracks)
 
