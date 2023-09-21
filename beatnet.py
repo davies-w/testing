@@ -2,6 +2,7 @@ from BeatNet.BeatNet import BeatNet
 from pydub import AudioSegment
 from pydub import silence
 import librosa
+import numpy as np
 
 def audiosegment_to_np_norm(audiosegment):
   """
@@ -19,7 +20,7 @@ def audiosegment_to_wav(audiosegment):
 
 def beatnet(params):
   print(params)
-  
+
   full = params.get("full", None)
   drums = params.get("drums", None)
   drumoffset = params.get("drumoffset", None)
