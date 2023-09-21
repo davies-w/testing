@@ -18,18 +18,18 @@ def audiosegment_to_wav(audiosegment):
 
 
 def beatnet(params):
-  print("HERE")
-  full = params.get("full", None)
-  drums = params.get("drums", None)
-  drumoffset = params.get("drumoffset", None)
-  beatnet_selector = params.get("beatnet_selector ", 1)
-  bars = params.get("bars", None) 
+    print("HERE")
+    full = params.get("full", None)
+    drums = params.get("drums", None)
+    drumoffset = params.get("drumoffset", None)
+    beatnet_selector = params.get("beatnet_selector ", 1)
+    bars = params.get("bars", None) 
  
-  if beatnet_selector == "librosa_drums" or  beatnet_selector == "librosa_full":
-    if beatnet_selector == "librosa_full":
-      y, sr = librosa.load(full, offset=0.0)
-    if beatnet_selector == "librosa_drums":
-      y, sr = librosa.load(drums, offset=0.0)
+    if beatnet_selector == "librosa_drums" or  beatnet_selector == "librosa_full":
+      if beatnet_selector == "librosa_full":
+        y, sr = librosa.load(full, offset=0.0)
+      if beatnet_selector == "librosa_drums":
+        y, sr = librosa.load(drums, offset=0.0)
       
     unused_tempo, beats = librosa.beat.beat_track(y=y, sr=sr, trim=False)
     beats = librosa.util.fix_frames(beats, x_min=0)
