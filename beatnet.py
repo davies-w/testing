@@ -1,5 +1,5 @@
 from BeatNet.BeatNet import BeatNet
-import pydub import AudioSegment
+from pydub import AudioSegment
 from pydub import silence
 import librosa
 
