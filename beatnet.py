@@ -73,6 +73,6 @@ def beatnet(params):
     bn_data = estimator.process(trimmed_drums_mono_wav)
 
   if not bars:
-    return [{'start': x[0]+(drumoffset_msec/1000)} for x in bn_data ]
+    return [{'start': x[0]+(drumoffset_msecs/1000)} for x in bn_data ]
   else:
-    return [{'start': x[0]+(drumoffset_msec/1000)} for x in bn_data if x[1] == 1.0]
+    return [{'start': x[0]+(drumoffset_msecs/1000)} for x in bn_data if x[1] == 1.0]
