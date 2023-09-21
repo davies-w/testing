@@ -20,7 +20,6 @@ def audiosegment_to_wav(audiosegment):
 
 
 def beatnet(params):
-  print(params)
 
   full = params.get("full", None)
   drums = params.get("drums", None)
