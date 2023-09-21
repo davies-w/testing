@@ -3,6 +3,7 @@ from pydub import AudioSegment
 from pydub import silence
 import librosa
 import numpy as np
+import math
 
 def audiosegment_to_np_norm(audiosegment):
   """
@@ -36,7 +37,7 @@ def beatnet(params):
     unused_tempo, beats = librosa.beat.beat_track(y=y, sr=sr, trim=False)
     beats = librosa.util.fix_frames(beats, x_min=0)
     beat_times = librosa.frames_to_time(beats, sr=sr)
-    return [{'start': x} for x in beat_times]
+    return [{'start': math.round(x,3)} for x in beat_times]
     
     
   estimator = BeatNet(beatnet_selector, mode='offline', inference_model='DBN', plot=[], thread=False)
@@ -73,6 +74,6 @@ def beatnet(params):
     bn_data = estimator.process(trimmed_drums_mono_wav)
 
   if not bars:
-    return [{'start': x[0]+(drumoffset_msecs/1000)} for x in bn_data ]
+    return [{'start':  math.round(x[0]+(drumoffset_msecs/1000), 3)} for x in bn_data ]
   else:
-    return [{'start': x[0]+(drumoffset_msecs/1000)} for x in bn_data if x[1] == 1.0]
+    return [{'start':  math.round(x[0]+(drumoffset_msecs/1000), 3)} for x in bn_data if x[1] == 1.0]
