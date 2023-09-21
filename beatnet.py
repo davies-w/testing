@@ -4,20 +4,22 @@ from pydub import silence
 import librosa
 
 def audiosegment_to_np_norm(audiosegment):
-    """
-    Converts pydub audio segment into np.float32 of shape [duration_in_seconds*sample_rate, channels],
-    where each value is in range [-1.0, 1.0].
-    Returns tuple (audio_np_array, sample_rate).
-    """
-    return np.array(audiosegment.get_array_of_samples(), dtype=np.float32).reshape((-1, audiosegment.channels)) / (
-            1 << (8 * audiosegment.sample_width - 1)), audiosegment.frame_rate
+  """
+  Converts pydub audio segment into np.float32 of shape [duration_in_seconds*sample_rate, channels],
+  where each value is in range [-1.0, 1.0].
+  Returns tuple (audio_np_array, sample_rate).
+  """
+  return np.array(audiosegment.get_array_of_samples(), dtype=np.float32).reshape((-1, audiosegment.channels)) / (
+                  1 << (8 * audiosegment.sample_width - 1)), audiosegment.frame_rate
 
 
 def audiosegment_to_wav(audiosegment):
-    return audiosegment_to_np_norm(audiosegment)
+  return audiosegment_to_np_norm(audiosegment)
 
 
 def beatnet(params):
+  print(params)
+  
   full = params.get("full", None)
   drums = params.get("drums", None)
   drumoffset = params.get("drumoffset", None)
